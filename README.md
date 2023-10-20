@@ -18,7 +18,17 @@ Follow these steps to deploy your Flask application on AWS:
 
 - Create a new EC2 instance, choose an appropriate Amazon Machine Image (AMI), and configure the instance with the necessary resources.
 
-### 3. Install Dependencies and deploy code from gitHub
+
+### 3. Configure Security Groups
+
+- Set up security groups for your EC2 instance, RDS instance, and Application Load Balancer to allow the necessary traffic.
+- Security group for RDS instance only allow traffic coming from EC2 instance security group
+- Security group for load balancer should allow traffice from HTTP and HTTPS only
+- Security group for EC2 instance should permit incoming traffic from the security group associated with your ALB.
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
+
+### 4. Install Dependencies and deploy code from gitHub
 
 - SSH into your EC2 instance and install the required dependencies for your Flask application. the source code is provided below. 
 
@@ -47,7 +57,7 @@ sudo apt install python3-dev default-libmysqlclient-dev build-essential -y
  pip install Gunicorn
 ```
  Once all the dependencies are installed please run  gunicorn -b 0.0.0.0:8000 app:app.
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20creatingserviceflask.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flaskgunicorn.png)
 
 
 -  Systemd is a boot manager for Linux. We are using it to restart gunicorn if the EC2 restarts or reboots for some reason.
@@ -62,7 +72,7 @@ Install — tells ```bash systemd ``` at which moment during boot process this s
 With that said, create an unit file in the ```bash /etc/systemd/system ``` directory
 
 ```bash
-  sudo nano /etc/systemd/system/flaskapp.service
+  sudo nano /etc/systemd/system/book.service
 ```
 - then add this into the file 
 
@@ -82,9 +92,11 @@ WantedBy=multi-user.target
 -  then enable the service
 ```bash
   sudo systemctl daemon-reload
-  sudo systemctl start  flaskapp
-  sudo systemctl enable flaskapp
+  sudo systemctl start  book
+  sudo systemctl enable book
 ```
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20creatingserviceflask.png)
 
 - instal nginx webserver and run Nginx webserver to accept and route request to Gunicorn
 
@@ -94,46 +106,108 @@ WantedBy=multi-user.target
    sudo systemctl enable nginx
 
 ```
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/installnginx.png)
 
-- Now please access the ec2 instance with publiic IP address.
+
+-  Edit the default file in the sites-available folder.
+
+```bash
+  sudo nano /etc/nginx/sites-available/default
+```
+
+- Add the following code at the top of the file (below the default comments)
+
+```bash
+upstream flaskhelloworld {
+    server 127.0.0.1:8000;
+}
+```
+
+- Add a proxy_pass to flaskhelloworld at ```location /```
+
+```bash
+location / {
+    proxy_pass http://flaskhelloworld;
+}
+```
+- Restart Nginx ```bash sudo systemctl restart nginx ```
+
+- Now please access the ec2 instance with public IP address.
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flask4.png)
 
 
 
-### 5. Configure Security Groups
-
-- Set up security groups for your EC2 instance, RDS instance, and Application Load Balancer to allow the necessary traffic.
-- Security group for RDS instance only allow traffic coming from EC2 instance security group
-- Security group for load balancer should allow traffice from HTTP and HTTPS only
-- Security group for EC2 instance should permit incoming traffic from the security group associated with your ALB.
-
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
-
-### 6. Create an RDS MySQL Database
+### 5. Create an RDS MySQL Database
 
 - Create an AWS RDS MySQL instance in a private subnet. Ensure it's configured with the appropriate security groups and VPC settings.
 - Ensure that only traffic from EC2 instance security group is allowed. 
 
 
- ### 7. Create an Application Load Balancer
+### 6. Create an Application Load Balancer
 
 - Configure an Application Load Balancer (ALB) to distribute incoming traffic across your EC2 instances.
 
-### 8. Add EC2 Instances to Target Group
+ ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20createloadbalancer.png)
+
+ - add security group which only allows HTTP and HTTPS traffic
+ 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
+
+ - add network settings for the load balancer. add Public subnets only
+ 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/loadbalancer1.png)
+
+### 7. Add EC2 Instances to Target Group
 
 - Add your EC2 instances to a target group associated with the ALB.
+1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/createTG.png)
 
-### 9. Create Load Balancer Listeners
+
+### 8. Create Load Balancer Listeners
 
 - Create two listeners: one for HTTP routing to HTTPS and another for HTTPS traffic.
+1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httpslis.png)
 
-### 10. ACM Certificate
+- Now try accessing load balancer with DNS name and you should see your application.
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/applicatatoroute53.png)
+
+
+### 9. ACM Certificate
 
 - Request an SSL certificate from AWS Certificate Manager (ACM) and associate it with your Application Load Balancer.
 
-### 11. Route 53 Setup
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/ACM.png)
+
+- Associate the certificate with HTTPS listener.
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/CERTtoALB.png)
+
+### 10. Route 53 Setup
 
 - Update Route 53 records to point to your Application Load Balancer, and associate your ACM certificate with your domain name. Ensure DNS propagation has occurred.
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/applicatatoroute53.png)
+
+### Testing to see HTTP is routing to HTTPS and test HTTPS route too. 
+- Now type Http://www.abilash-vavilala.link/. This should route through HTTPS.
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httptohttps.png)
+
+This should route towards HTTPS.
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httptohttps1.png)
+
+ 
+
+
+
+
+### test to see data is loading into RDS
+
+- Will add book to see data is being loaded into AWS MYsql RDS.
+
+
+
+
+
+
 
 ## Additional Resources
 
