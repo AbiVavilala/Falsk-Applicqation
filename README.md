@@ -62,7 +62,7 @@ Install — tells ```bash systemd ``` at which moment during boot process this s
 With that said, create an unit file in the ```bash /etc/systemd/system ``` directory
 
 ```bash
-  sudo nano /etc/systemd/system/helloworld.service
+  sudo nano /etc/systemd/system/flaskapp.service
 ```
 - then add this into the file 
 
@@ -79,6 +79,26 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
+-  then enable the service
+```bash
+  sudo systemctl daemon-reload
+  sudo systemctl start  flaskapp
+  sudo systemctl enable flaskapp
+```
+
+- instal nginx webserver and run Nginx webserver to accept and route request to Gunicorn
+
+```bash
+   sudo apt-get nginx
+   sudo systemctl start nginx
+   sudo systemctl enable nginx
+
+```
+
+- Now please access the ec2 instance with publiic IP address.
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flask4.png)
+
+
 
 ### 5. Configure Security Groups
 
@@ -95,9 +115,7 @@ WantedBy=multi-user.target
 - Ensure that only traffic from EC2 instance security group is allowed. 
 
 
- 
-
-### 7. Create an Application Load Balancer
+ ### 7. Create an Application Load Balancer
 
 - Configure an Application Load Balancer (ALB) to distribute incoming traffic across your EC2 instances.
 
