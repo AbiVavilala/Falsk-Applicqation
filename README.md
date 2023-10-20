@@ -63,9 +63,10 @@ With that said, create an unit file in the ```bash /etc/systemd/system ``` direc
 
 ```bash
   sudo nano /etc/systemd/system/helloworld.service
-
-- then add this into the file 
 ```
+- then add this into the file 
+
+```bash
  [Unit]
 Description=Gunicorn instance for a  flask app
 After=network.target
