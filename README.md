@@ -80,13 +80,22 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-### 5. Create an RDS MySQL Database
-
-- Create an AWS RDS MySQL instance in a private subnet. Ensure it's configured with the appropriate security groups and VPC settings.
-
-### 6. Configure Security Groups
+### 5. Configure Security Groups
 
 - Set up security groups for your EC2 instance, RDS instance, and Application Load Balancer to allow the necessary traffic.
+- Security group for RDS instance only allow traffic coming from EC2 instance security group
+- Security group for load balancer should allow traffice from HTTP and HTTPS only
+- Security group for EC2 instance should permit incoming traffic from the security group associated with your ALB.
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
+
+### 6. Create an RDS MySQL Database
+
+- Create an AWS RDS MySQL instance in a private subnet. Ensure it's configured with the appropriate security groups and VPC settings.
+- Ensure that only traffic from EC2 instance security group is allowed. 
+
+
+ 
 
 ### 7. Create an Application Load Balancer
 
