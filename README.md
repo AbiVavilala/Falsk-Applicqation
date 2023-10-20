@@ -62,7 +62,7 @@ sudo apt install python3-dev default-libmysqlclient-dev build-essential -y
 
 -  Systemd is a boot manager for Linux. We are using it to restart gunicorn if the EC2 restarts or reboots for some reason.
 
-We create a ```bash <projectname>.service file in the /etc/systemd/system folder ```, and specify what would happen to gunicorn when the system reboots.
+We create a ``` <projectname>.service file in the /etc/systemd/system folder ```, and specify what would happen to gunicorn when the system reboots.
 
 We will be adding 3 parts to systemd Unit file — Unit, Service, Install
 
