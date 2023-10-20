@@ -100,13 +100,16 @@ WantedBy=multi-user.target
 
 - instal nginx webserver and run Nginx webserver to accept and route request to Gunicorn
 
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/installnginx.png)
+
 ```bash
    sudo apt-get nginx
    sudo systemctl start nginx
    sudo systemctl enable nginx
 
 ```
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/installnginx.png)
+
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flask4.png)
 
 
 -  Edit the default file in the sites-available folder.
@@ -133,8 +136,8 @@ location / {
 - Restart Nginx ```bash sudo systemctl restart nginx ```
 
 - Now please access the ec2 instance with public IP address.
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flask4.png)
 
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20Flaskonec2.png)
 
 
 ### 5. Create an RDS MySQL Database
