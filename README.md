@@ -32,7 +32,7 @@ Follow these steps to deploy your Flask application on AWS:
 - Security group for load balancer should allow traffice from HTTP and HTTPS only
 - Security group for EC2 instance should permit incoming traffic from the security group associated with your ALB.
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20loadbalancersg.png)
 
 ### 5. Install Dependencies and deploy code from gitHub
 
@@ -63,7 +63,7 @@ sudo apt install python3-dev default-libmysqlclient-dev build-essential -y
  pip install Gunicorn
 ```
  Once all the dependencies are installed please run  gunicorn -b 0.0.0.0:8000 app:app.
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flaskgunicorn.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20flaskgunicorn.png)
 
 
 -  Systemd is a boot manager for Linux. We are using it to restart gunicorn if the EC2 restarts or reboots for some reason.
@@ -102,11 +102,11 @@ WantedBy=multi-user.target
   sudo systemctl enable book
 ```
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20creatingserviceflask.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20creatingserviceflask.png)
 
 - instal nginx webserver and run Nginx webserver to accept and route request to Gunicorn
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/installnginx.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/installnginx.png)
 
 ```bash
    sudo apt-get nginx
@@ -115,7 +115,7 @@ WantedBy=multi-user.target
 
 ```
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20flask4.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20flask4.png)
 
 
 -  Edit the default file in the sites-available folder.
@@ -143,7 +143,7 @@ location / {
 
 - Now please access the ec2 instance with public IP address.
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20Flaskonec2.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20Flaskonec2.png)
 
 
 
@@ -152,61 +152,54 @@ location / {
 
 - Configure an Application Load Balancer (ALB) to distribute incoming traffic across your EC2 instances.
 
- ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20createloadbalancer.png)
+ ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20createloadbalancer.png)
 
  - add security group which only allows HTTP and HTTPS traffic
- 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
+ 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20loadbalancersg.png)
 
  - add network settings for the load balancer. add Public subnets only
- 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/loadbalancer1.png)
+ 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/loadbalancer1.png)
 
 ### 7. Add EC2 Instances to Target Group
 
 - Add your EC2 instances to a target group associated with the ALB.
-1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/createTG.png)
+1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/createTG.png)
 
 
 ### 8. Create Load Balancer Listeners
 
 - Create two listeners: one for HTTP routing to HTTPS and another for HTTPS traffic.
-1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httpslis.png)
+1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/httpslis.png)
 
 - Now try accessing load balancer with DNS name and you should see your application.
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/applicatatoroute53.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/applicatatoroute53.png)
 
 
 ### 9. ACM Certificate
 
 - Request an SSL certificate from AWS Certificate Manager (ACM) and associate it with your Application Load Balancer.
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/ACM.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/ACM.png)
 
 - Associate the certificate with HTTPS listener.
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/CERTtoALB.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/CERTtoALB.png)
 
 ### 10. Route 53 Setup
 
 - Update Route 53 records to point to your Application Load Balancer, and associate your ACM certificate with your domain name. Ensure DNS propagation has occurred.
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/applicatatoroute53.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/applicatatoroute53.png)
 
 ### 11. Testing to see HTTP is routing to HTTPS and test HTTPS route too. 
 - Now type Http://www.abilash-vavilala.link/. This should route through HTTPS.
 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httptohttps.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/httptohttps.png)
 
 This should route towards HTTPS.
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httptohttps1.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/httptohttps1.png)
 
- 
-
-
-
-
-### test to see data is loading into RDS
-
-- Will add book to see data is being loaded into AWS MYsql RDS.
+  
 
 
 
