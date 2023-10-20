@@ -2,8 +2,7 @@
 
  ## Application I am deploying
 I am deploying a Flask Web application. Source code is in the repo. This application is Library Catalogue Management. I will add books with author name and price of the book, Update book info and delete the book from catalogue. data is stored in AWS RDS MySQL database. 
-![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20FlaskApplication.png)
-
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20FlaskApplication.png)
 
 
 
