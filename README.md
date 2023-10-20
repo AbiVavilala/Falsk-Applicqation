@@ -155,21 +155,21 @@ location / {
  ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20createloadbalancer.png)
 
  - add security group which only allows HTTP and HTTPS traffic
- 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20loadbalancersg.png)
+ ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/%20loadbalancersg.png)
 
  - add network settings for the load balancer. add Public subnets only
- 1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/loadbalancer1.png)
+ ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/loadbalancer1.png)
 
 ### 7. Add EC2 Instances to Target Group
 
 - Add your EC2 instances to a target group associated with the ALB.
-1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/createTG.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/createTG.png)
 
 
 ### 8. Create Load Balancer Listeners
 
 - Create two listeners: one for HTTP routing to HTTPS and another for HTTPS traffic.
-1[](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/httpslis.png)
+![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/httpslis.png)
 
 - Now try accessing load balancer with DNS name and you should see your application.
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/Sourcecode/picsforreadme/applicatatoroute53.png)
