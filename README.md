@@ -19,7 +19,14 @@ Follow these steps to deploy your Flask application on AWS:
 - Create a new EC2 instance, choose an appropriate Amazon Machine Image (AMI), and configure the instance with the necessary resources.
 
 
-### 3. Configure Security Groups
+### 3. Create an RDS MySQL Database
+
+- Create an AWS RDS MySQL instance in a private subnet. Ensure it's configured with the appropriate security groups and VPC settings.
+- Ensure that only traffic from EC2 instance security group is allowed. 
+- Configure the database to your sourcecode and test to see if it's writing data into database, updating data and deleting data from source code.
+
+
+### 4. Configure Security Groups
 
 - Set up security groups for your EC2 instance, RDS instance, and Application Load Balancer to allow the necessary traffic.
 - Security group for RDS instance only allow traffic coming from EC2 instance security group
@@ -28,7 +35,7 @@ Follow these steps to deploy your Flask application on AWS:
 
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20loadbalancersg.png)
 
-### 4. Install Dependencies and deploy code from gitHub
+### 5. Install Dependencies and deploy code from gitHub
 
 - SSH into your EC2 instance and install the required dependencies for your Flask application. the source code is provided below. 
 
@@ -140,10 +147,6 @@ location / {
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20Flaskonec2.png)
 
 
-### 5. Create an RDS MySQL Database
-
-- Create an AWS RDS MySQL instance in a private subnet. Ensure it's configured with the appropriate security groups and VPC settings.
-- Ensure that only traffic from EC2 instance security group is allowed. 
 
 
 ### 6. Create an Application Load Balancer
@@ -189,7 +192,7 @@ location / {
 
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/applicatatoroute53.png)
 
-### Testing to see HTTP is routing to HTTPS and test HTTPS route too. 
+### 11. Testing to see HTTP is routing to HTTPS and test HTTPS route too. 
 - Now type Http://www.abilash-vavilala.link/. This should route through HTTPS.
 
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/httptohttps.png)
