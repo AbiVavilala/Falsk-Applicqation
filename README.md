@@ -39,20 +39,45 @@ Git clone https://github.com/AbiVavilala/Flask-Application-on-AWS.git
   python3 -m venv venv
 // Activate the virtual environment
   source venv/bin/activate
-// Install dependencies for smysqlclient Library
+// Install dependencies for mysqlclient Library
 sudo apt install python3-dev default-libmysqlclient-dev build-essential -y
 // Install requirements
   pip install -r requirements.txt
 // Install Gunicorn as WSGI to handle request from users
  pip install Gunicorn
 ```
- Once all the dependencies are installed please run  gunicorn -b 0.0.0.0:8000 app:app (as mentioned in image below) to se
+ Once all the dependencies are installed please run  gunicorn -b 0.0.0.0:8000 app:app.
 ![](https://github.com/AbiVavilala/Flask-Application-on-AWS/blob/main/picsforreadme/%20creatingserviceflask.png)
 
 
- 
+-  Systemd is a boot manager for Linux. We are using it to restart gunicorn if the EC2 restarts or reboots for some reason.
 
-- Upload your Flask application code to the EC2 instance and set up the web server (e.g., Gunicorn, Nginx) to serve your application.
+We create a ```bash <projectname>.service file in the /etc/systemd/system folder ```, and specify what would happen to gunicorn when the system reboots.
+
+We will be adding 3 parts to systemd Unit file — Unit, Service, Install
+
+Unit — This section is for description about the project and some dependencies
+Service — To specify user/group we want to run this service after. Also some information about the executables and the commands.
+Install — tells ```bash systemd ``` at which moment during boot process this service should start.
+With that said, create an unit file in the ```bash /etc/systemd/system ``` directory
+
+```bash
+  sudo nano /etc/systemd/system/helloworld.service
+
+- then add this into the file 
+```
+ [Unit]
+Description=Gunicorn instance for a  flask app
+After=network.target
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Flask/Flask-Applicqation
+ExecStart=/home/ubuntu/Flask/Flask-Applicqationvenv/bin/gunicorn -b localhost:8000 app:app
+Restart=always
+[Install]
+WantedBy=multi-user.target
+```
 
 ### 5. Create an RDS MySQL Database
 
