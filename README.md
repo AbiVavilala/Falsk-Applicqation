@@ -23,13 +23,13 @@ Follow these steps to deploy your Flask application on AWS:
 - SSH into your EC2 instance and install the required dependencies for your Flask application. the source code is provided below. 
 
 -Install Python Virtualenv
-'''linux
+'''bash
   sudo apt-get update
   sudo apt-get install python3-venv
 
 '''
 -  I need to clone my source code into my ec2 instance. I created a folder Flask and cloned my repo into that folder. I installed libraries required to host my application.
-'''linux
+'''bash
 // Create directory
   mkdir  Flask
   cd Flask
