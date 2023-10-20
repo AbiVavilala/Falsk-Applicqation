@@ -23,7 +23,7 @@ Follow these steps to deploy your Flask application on AWS:
 
 - Create an AWS RDS MySQL instance in a private subnet. Ensure it's configured with the appropriate security groups and VPC settings.
 - Ensure that only traffic from EC2 instance security group is allowed. 
-- Configure the database to your sourcecode and test to see if it's writing data into database, updating data and deleting data from source code.
+- Configure the database to your sourcecode and test to see if it's writing data into database, updating data and deleting data from the frontend of the application.
 
 
 ### 4. Configure Security Groups
